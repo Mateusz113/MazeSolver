@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">maze_solver</string>
+    <string name="application_name">Maze Solver</string>
+    <string name="maze">Maze</string>
+    <string name="settings">Settings</string>
+    <string name="algorithm_choosing_desc">Algorithm:</string>
+    <string name="bfs">Breadth-first search</string>
+    <string name="dfs">Depth-first search</string>
+    <string name="bidirectional_bfs">Bidirectional BFS</string>
+    <string name="a_star">A*</string>
+    <string name="smallMazeSize">20 x 30</string>
+    <string name="mediumMazeSize">30 x 45</string>
+    <string name="largeMazeSize">40 x 60</string>
+    <string name="maze_size_desc">Maze size:</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="reload">Reload</string>
+    <string name="greedy_search">Greedy search</string>
+    <string name="randomized_dfs">Randomized DFS</string>
+    <string name="prims">Prim\'s algorithm</string>
+    <string name="maze_generator">Maze generator:</string>
+    <string name="twenty_by_thirty">20 x 30</string>
+    <string name="thirty_by_fourtyfive">30 x 45</string>
+    <string name="fourty_by_sixty">40 x 60</string>
+    <string name="settings_text">Chosen algorithm: %1$s \n Maze size: %2$s \n Maze generator: %3$s</string>
+</resources>
