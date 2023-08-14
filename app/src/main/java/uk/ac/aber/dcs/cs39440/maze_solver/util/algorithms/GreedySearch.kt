@@ -1,120 +1,68 @@
 package uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms
 
-import kotlinx.coroutines.delay
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Node
 import uk.ac.aber.dcs.cs39440.maze_solver.util.maze_map.Cell
-import kotlin.math.pow
-import kotlin.math.sqrt
+import java.util.PriorityQueue
 
+class GreedySearch(
+    override var mazeWidth: Int,
+    override var mazeHeight: Int,
+    override var startCell: Cell,
+    override var endCell: Cell
+) : SingleStartPathfinder {
+    //Variables inherited from the interface
+    override val parentMap = mutableMapOf<Cell, Cell>()
+    override var finalPathCell: Cell? = null
 
-/**
- * Greedy search pathfinding algorithm. The heuristic used for determining the distance from the end is Euclidean distance.
- * @param mazeHeight Maze height
- * @param mazeWidth Maze width
- * @param mazeMap Map of the maze that is considered
- * @param startX X coordinate of the start
- * @param startY Y coordinate of the start
- * @param endX X coordinate of the end
- * @param endY Y coordinate of the end
- * @param updateAffiliation updates affiliation of cells in viewModel
- */
-suspend fun greedySearch(
-    mazeWidth: Int,
-    mazeHeight: Int,
-    mazeMap: MutableList<MutableList<Cell>>,
-    startX: Int,
-    startY: Int,
-    endX: Int,
-    endY: Int,
-    updateAffiliation: (Cell, Node) -> Unit,
-    delayLength: Long
-): Boolean {
-    //Currently considered cell
-    var currentCell = mazeMap[startX][startY]
-    //List of cells that will be checked
-    val cellPriorityList: MutableList<Pair<Cell, Int>> = mutableListOf()
-    //Map of parents of each node to get the final path
-    val parentMap = mutableMapOf<Cell, Cell>()
+    //Class variables
+    private var currentCell = Cell(-1, -1)
 
-    //Check for the neighbours of the start, add them to the list and update parent map
-    checkForValidPaths(
-        mazeMap = mazeMap,
-        currentCell = currentCell,
-        mazeWidth = mazeWidth,
-        mazeHeight = mazeHeight
-    ).forEach { neighbour ->
-        cellPriorityList.add(
-            Pair(
-                neighbour.value,
-                calculateDistanceFunction(neighbour.value, endX, endY)
-            )
-        )
-        parentMap[neighbour.value] = currentCell
-        updateAffiliation(neighbour.value, Node.Queued)
+    //Comparator to distinguish which cell is closer to the end for priority queue
+    private val cellComparator = Comparator<Cell> { cell1, cell2 ->
+        cellDistanceFunction(cell = cell1, costToReach = 0)
+        -cellDistanceFunction(cell = cell2, costToReach = 0)
     }
-    //Sort the list based on the combined heuristics and cost to reach
-    cellPriorityList.sortBy { it.second }
+    private val queueToCheck: PriorityQueue<Cell> = PriorityQueue<Cell>(cellComparator)
 
-    //Update the start and end affiliation
-    updateAffiliation(currentCell, Node.Considered)
-    updateAffiliation(mazeMap[endX][endY], Node.End)
+    //Initialize the class with the starting node already inserted into queue
+    init {
+        queueToCheck.add(startCell)
+    }
 
-    while (cellPriorityList.isNotEmpty()) {
-        //Get the current information and cell
-        currentCell = cellPriorityList.removeFirst().first
+    override fun run(
+        mazeMap: MutableList<MutableList<Cell>>,
+        updateAffiliation: (Cell, Node) -> Unit
+    ): Boolean {
+        if (queueToCheck.isNotEmpty()) {
+            currentCell = queueToCheck.remove()
 
-        if (currentCell.x == endX && currentCell.y == endY) {
-            //Reinitialize the start and end indications
-            updateAffiliation(mazeMap[endX][endY], Node.End)
-            updateAffiliation(mazeMap[startX][startY], Node.Start)
-
-            //Goes through the parent list to find the final path through the maze
-            getFinalPath(
-                parentMap = parentMap,
-                startCell = mazeMap[startX][startY],
-                endCell = currentCell,
-                updateAffiliation = { cell, node ->
-                    updateAffiliation(cell, node)
-                },
-                delayLength = delayLength
-            )
-            return true
-        } else {
-            //Set the node to considered so the algorithm does not go back
-            updateAffiliation(currentCell, Node.Considered)
+            //Returns true as algorithm is finished
+            if (currentCell.x == endCell.x && currentCell.y == endCell.y) {
+                finalPathCell = currentCell
+                return true
+            } else {
+                updateAffiliation(currentCell, Node.Considered)
+            }
+            addNeighboursToQueue(mazeMap).forEach { cell ->
+                updateAffiliation(cell, Node.Queued)
+            }
         }
+        return false
+    }
 
-        //Do the same operation as in the beginning, but for the current node
+    //Function returns the list of items that were added to the map
+    private fun addNeighboursToQueue(
+        mazeMap: MutableList<MutableList<Cell>>,
+    ): List<Cell> {
+        val cellList = mutableListOf<Cell>()
         checkForValidPaths(
             mazeMap = mazeMap,
-            currentCell = currentCell,
-            mazeWidth = mazeWidth,
-            mazeHeight = mazeHeight
-        ).forEach { neighbour ->
-            cellPriorityList.add(
-                Pair(
-                    neighbour.value,
-                    calculateDistanceFunction(neighbour.value, endX, endY)
-                )
-            )
-            parentMap[neighbour.value] = currentCell
-            updateAffiliation(neighbour.value, Node.Queued)
+            currentCell = currentCell
+        ).forEach {
+            parentMap[it.value] = currentCell
+            queueToCheck.add(it.value)
+            cellList.add(it.value)
         }
-        cellPriorityList.sortBy { it.second }
-
-        //Delay the execution
-        delay(delayLength)
+        return cellList.toList()
     }
-    return false
-}
-
-//Helper function to calculate the distance function
-private fun calculateDistanceFunction(
-    currentCell: Cell,
-    endX: Int,
-    endY: Int
-): Int {
-    return sqrt(
-        (endX - currentCell.x).toDouble().pow(2) + (endY - currentCell.y).toDouble().pow(2)
-    ).toInt()
 }
