@@ -36,7 +36,7 @@ class MainViewModel : ViewModel() {
     }
 
     //Generates maze based on the current settings and saves the new version to reload
-    fun generateMaze() {
+    private fun generateMaze() {
         val newMazeMap = _mazeMap.value.toMutableList()
         newMazeMap.clear()
         when (_mazeGenerator.value) {
@@ -93,9 +93,10 @@ class MainViewModel : ViewModel() {
         _algorithmChosen.value = algorithm
     }
 
-    //Switches the mazeInfo to the new one provided
+    //Switches the mazeInfo to the new one provided and generates new maze
     fun changeMazeInformation(mazeInfo: MazeInfo) {
         _mazeInformation.value = mazeInfo
+        generateMaze()
     }
 
     //Switches the maze generator to one provided
