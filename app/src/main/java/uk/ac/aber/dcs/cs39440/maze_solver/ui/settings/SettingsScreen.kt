@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Divider
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,19 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import uk.ac.aber.dcs.cs39440.maze_solver.MainViewModel
-import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.RadioButtonsGenerator
-import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.SettingsMenuGenerator
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.Maze_solverTheme
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Algorithm
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeGenerator
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeInfo
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.window.Dialog
 import uk.ac.aber.dcs.cs39440.maze_solver.R
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.OptionSelectionDialog
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.SettingsOption
@@ -130,7 +122,9 @@ fun SettingsScreen(
                 .padding(top = 10.dp),
             currentMazeSize = currentMazeInfo,
             mazeSizeSelection = { mazeInfo ->
-                viewModel.changeMazeInformation(mazeInfo)
+                if (mazeInfo != currentMazeInfo) {
+                    viewModel.changeMazeInformation(mazeInfo)
+                }
             },
             isDialogOpen = isMazeSizeSelectionDialogOpen,
             dialogOpen = { isOpen ->
