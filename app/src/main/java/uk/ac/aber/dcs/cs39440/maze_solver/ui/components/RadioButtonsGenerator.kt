@@ -44,6 +44,7 @@ fun <T> RadioButtonsGenerator(
             ) {
                 //Button
                 RadioButton(
+                    modifier = Modifier.padding(start = 10.dp),
                     selected = (option == currentlySelectedOption),
                     onClick = {
                         optionSelection(option)
