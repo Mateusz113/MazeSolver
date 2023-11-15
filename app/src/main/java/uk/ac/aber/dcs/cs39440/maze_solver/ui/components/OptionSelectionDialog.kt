@@ -25,14 +25,11 @@ import uk.ac.aber.dcs.cs39440.maze_solver.R
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.typography
 
 @Composable
-fun <T> OptionSelectionDialog(
+fun OptionSelectionDialog(
     dialogLabel: String,
-    listOfOptions: List<T>,
-    labels: Map<T, Int>,
-    currentlySelectedOption: T,
-    optionSelection: (T) -> Unit,
     isDialogOpen: Boolean,
     dialogOpen: (Boolean) -> Unit,
+    dialogContent: @Composable (Modifier) -> Unit
 ) {
     if (isDialogOpen) {
 
@@ -71,23 +68,14 @@ fun <T> OptionSelectionDialog(
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    RadioButtonsGenerator(
-                        modifier = Modifier
+                    dialogContent(
+                        Modifier
                             .constrainAs(radioButtons) {
                                 top.linkTo(labelDivider.bottom)
                                 start.linkTo(parent.start)
                             }
                             .fillMaxWidth()
-                            .padding(top = 10.dp, start = 10.dp),
-                        listOfOptions = listOfOptions,
-                        labels = labels,
-                        currentlySelectedOption = currentlySelectedOption,
-                        optionSelection = { algorithm ->
-                            if (currentlySelectedOption != algorithm) {
-                                optionSelection(algorithm)
-                                dialogOpen(false)
-                            }
-                        }
+                            .padding(top = 10.dp)
                     )
 
                     Divider(
