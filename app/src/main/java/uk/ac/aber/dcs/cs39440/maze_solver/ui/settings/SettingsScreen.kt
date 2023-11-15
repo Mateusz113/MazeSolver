@@ -180,6 +180,7 @@ fun PathfindingAlgorithmSection(
     }
 
     OptionSelectionDialog(
+        dialogLabel = stringResource(id = R.string.pathfinding_algorithm),
         listOfOptions = Algorithm.values().toList(),
         labels = algorithmLabelsMap,
         currentlySelectedOption = currentAlgorithm,
@@ -239,6 +240,7 @@ fun MazeGeneratingAlgorithmSection(
     }
 
     OptionSelectionDialog(
+        dialogLabel = stringResource(id = R.string.maze_gen_algorithm),
         listOfOptions = MazeGenerator.values().toList(),
         labels = mazeGeneratorLabelsMap,
         currentlySelectedOption = currentMazeGenAlgorithm,
@@ -298,6 +300,7 @@ fun MazeSizeSection(
     }
 
     OptionSelectionDialog(
+        dialogLabel = stringResource(id = R.string.maze_size),
         listOfOptions = MazeInfo.values().toList(),
         labels = mazeInfoLabelsMap,
         currentlySelectedOption = currentMazeSize,
