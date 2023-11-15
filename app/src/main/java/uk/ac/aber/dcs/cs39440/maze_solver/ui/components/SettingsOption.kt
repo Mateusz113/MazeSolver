@@ -18,11 +18,10 @@ import androidx.compose.ui.unit.sp
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.typography
 
 @Composable
-fun <T> SettingsOption(
+fun SettingsOption(
     modifier: Modifier,
     optionDescription: String,
-    labels: Map<T, Int>,
-    currentlySelectedOption: T,
+    currentlySelectedOption: String?,
     dialogOpen: (Boolean) -> Unit,
 ) {
     Column(
@@ -34,18 +33,18 @@ fun <T> SettingsOption(
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            modifier = Modifier.padding(start = 10.dp),
+            modifier = Modifier.padding(start = 20.dp),
             text = optionDescription,
             style = TextStyle(
                 fontSize = typography.titleMedium.fontSize,
                 fontWeight = FontWeight.SemiBold
             )
         )
-        Text(
-            modifier = Modifier.padding(start = 10.dp),
-            text = stringResource(
-                id = labels[currentlySelectedOption]!!
-            ),
-        )
+        currentlySelectedOption?.let {
+            Text(
+                modifier = Modifier.padding(start = 20.dp),
+                text = currentlySelectedOption
+            )
+        }
     }
 }
