@@ -21,7 +21,7 @@ import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.typography
 fun SettingsOption(
     modifier: Modifier,
     optionDescription: String,
-    currentlySelectedOption: String?,
+    currentlySelectedOption: String? = null,
     dialogOpen: (Boolean) -> Unit,
 ) {
     Column(
