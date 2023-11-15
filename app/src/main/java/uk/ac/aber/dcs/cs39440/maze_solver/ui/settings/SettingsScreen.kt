@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import uk.ac.aber.dcs.cs39440.maze_solver.R
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.OptionSelectionDialog
+import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.RadioButtonsGenerator
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.SettingsOption
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.typography
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.algorithmLabelsMap
@@ -171,8 +172,7 @@ fun PathfindingAlgorithmSection(
                 }
                 .padding(top = 10.dp),
             optionDescription = stringResource(id = R.string.current_pathfinding_algorithm),
-            labels = algorithmLabelsMap,
-            currentlySelectedOption = currentAlgorithm,
+            currentlySelectedOption = stringResource(id = algorithmLabelsMap[currentAlgorithm]!!),
             dialogOpen = { isOpen ->
                 dialogOpen(isOpen)
             }
@@ -181,17 +181,24 @@ fun PathfindingAlgorithmSection(
 
     OptionSelectionDialog(
         dialogLabel = stringResource(id = R.string.pathfinding_algorithm),
-        listOfOptions = Algorithm.values().toList(),
-        labels = algorithmLabelsMap,
-        currentlySelectedOption = currentAlgorithm,
-        optionSelection = { algorithm ->
-            algorithmSelection(algorithm)
-        },
         isDialogOpen = isDialogOpen,
         dialogOpen = { isOpen ->
             dialogOpen(isOpen)
         }
-    )
+    ) { customModifier ->
+        RadioButtonsGenerator(
+            modifier = customModifier,
+            listOfOptions = Algorithm.values().toList(),
+            labels = algorithmLabelsMap,
+            currentlySelectedOption = currentAlgorithm,
+            optionSelection = { newMazeSolver ->
+                if (currentAlgorithm != newMazeSolver) {
+                    algorithmSelection(newMazeSolver)
+                    dialogOpen(false)
+                }
+            },
+        )
+    }
 }
 
 @Composable
@@ -231,8 +238,7 @@ fun MazeGeneratingAlgorithmSection(
                 }
                 .padding(top = 10.dp),
             optionDescription = stringResource(id = R.string.current_maze_gen_algorithm),
-            labels = mazeGeneratorLabelsMap,
-            currentlySelectedOption = currentMazeGenAlgorithm,
+            currentlySelectedOption = stringResource(id = mazeGeneratorLabelsMap[currentMazeGenAlgorithm]!!),
             dialogOpen = { isOpen ->
                 dialogOpen(isOpen)
             }
@@ -241,17 +247,24 @@ fun MazeGeneratingAlgorithmSection(
 
     OptionSelectionDialog(
         dialogLabel = stringResource(id = R.string.maze_gen_algorithm),
-        listOfOptions = MazeGenerator.values().toList(),
-        labels = mazeGeneratorLabelsMap,
-        currentlySelectedOption = currentMazeGenAlgorithm,
-        optionSelection = { option ->
-            mazeGenAlgorithmSelection(option)
-        },
         isDialogOpen = isDialogOpen,
         dialogOpen = { isOpen ->
             dialogOpen(isOpen)
         }
-    )
+    ) { customModifier ->
+        RadioButtonsGenerator(
+            modifier = customModifier,
+            listOfOptions = MazeGenerator.values().toList(),
+            labels = mazeGeneratorLabelsMap,
+            currentlySelectedOption = currentMazeGenAlgorithm,
+            optionSelection = { newMazeGen ->
+                if (currentMazeGenAlgorithm != newMazeGen) {
+                    mazeGenAlgorithmSelection(newMazeGen)
+                    dialogOpen(false)
+                }
+            },
+        )
+    }
 }
 
 @Composable
@@ -291,8 +304,7 @@ fun MazeSizeSection(
                 }
                 .padding(top = 10.dp),
             optionDescription = stringResource(id = R.string.current_maze_size),
-            labels = mazeInfoLabelsMap,
-            currentlySelectedOption = currentMazeSize,
+            currentlySelectedOption = stringResource(id = mazeInfoLabelsMap[currentMazeSize]!!),
             dialogOpen = { isOpen ->
                 dialogOpen(isOpen)
             }
@@ -301,17 +313,24 @@ fun MazeSizeSection(
 
     OptionSelectionDialog(
         dialogLabel = stringResource(id = R.string.maze_size),
-        listOfOptions = MazeInfo.values().toList(),
-        labels = mazeInfoLabelsMap,
-        currentlySelectedOption = currentMazeSize,
-        optionSelection = { option ->
-            mazeSizeSelection(option)
-        },
         isDialogOpen = isDialogOpen,
         dialogOpen = { isOpen ->
             dialogOpen(isOpen)
         }
-    )
+    ) { customModifier ->
+        RadioButtonsGenerator(
+            modifier = customModifier,
+            listOfOptions = MazeInfo.values().toList(),
+            labels = mazeInfoLabelsMap,
+            currentlySelectedOption = currentMazeSize,
+            optionSelection = { newMazeSize ->
+                if (currentMazeSize != newMazeSize) {
+                    mazeSizeSelection(newMazeSize)
+                    dialogOpen(false)
+                }
+            }
+        )
+    }
 }
 
 @Preview
