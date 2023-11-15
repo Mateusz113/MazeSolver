@@ -16,13 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import uk.ac.aber.dcs.cs39440.maze_solver.R
+import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.typography
 
 @Composable
 fun <T> OptionSelectionDialog(
+    dialogLabel: String,
     listOfOptions: List<T>,
     labels: Map<T, Int>,
     currentlySelectedOption: T,
@@ -42,11 +46,35 @@ fun <T> OptionSelectionDialog(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)
             ) {
                 ConstraintLayout {
-                    val (radioButtons, divider, cancelButton) = createRefs()
+                    val (label, labelDivider, radioButtons, buttonDivider, cancelButton) = createRefs()
+                    Text(
+                        modifier = Modifier
+                            .constrainAs(label) {
+                                top.linkTo(parent.top)
+                                centerHorizontallyTo(parent)
+                            }
+                            .padding(top = 15.dp),
+                        text = dialogLabel,
+                        style = TextStyle(
+                            fontSize = typography.titleMedium.fontSize,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .constrainAs(labelDivider) {
+                                top.linkTo(label.bottom)
+                            }
+                            .fillMaxWidth()
+                            .padding(top = 15.dp),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
                     RadioButtonsGenerator(
                         modifier = Modifier
                             .constrainAs(radioButtons) {
-                                top.linkTo(parent.top)
+                                top.linkTo(labelDivider.bottom)
                                 start.linkTo(parent.start)
                             }
                             .fillMaxWidth()
@@ -64,7 +92,7 @@ fun <T> OptionSelectionDialog(
 
                     Divider(
                         modifier = Modifier
-                            .constrainAs(divider) {
+                            .constrainAs(buttonDivider) {
                                 top.linkTo(radioButtons.bottom)
                             }
                             .fillMaxWidth()
@@ -77,9 +105,9 @@ fun <T> OptionSelectionDialog(
                             .constrainAs(cancelButton) {
                                 bottom.linkTo(parent.bottom)
                                 end.linkTo(parent.end)
-                                top.linkTo(divider.bottom)
+                                top.linkTo(buttonDivider.bottom)
                             }
-                            .padding(end = 10.dp, bottom = 10.dp, top = 5.dp),
+                            .padding(5.dp),
                         onClick = { dialogOpen(false) }
                     ) {
                         Text(text = stringResource(id = R.string.cancel))
