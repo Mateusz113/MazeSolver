@@ -1,10 +1,13 @@
 package uk.ac.aber.dcs.cs39440.maze_solver.ui.settings
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,26 +15,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import uk.ac.aber.dcs.cs39440.maze_solver.MainViewModel
-import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.Maze_solverTheme
-import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Algorithm
-import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeGenerator
-import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeInfo
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import uk.ac.aber.dcs.cs39440.maze_solver.R
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.OptionSelectionDialog
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.RadioButtonsGenerator
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.SettingsOption
+import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.Maze_solverTheme
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.typography
+import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Algorithm
+import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeGenerator
+import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeInfo
+import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.algorithmDescriptionMap
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.algorithmLabelsMap
+import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.mazeGeneratorDescriptionMap
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.mazeGeneratorLabelsMap
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.mazeInfoLabelsMap
 
@@ -64,29 +70,23 @@ fun SettingsScreen(
         mutableStateOf(false)
     }
 
-    ConstraintLayout(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .padding(bottom = 20.dp)
     ) {
-        //Creating refs for items
-        val (
-            algorithmSection,
-            mazeGenSection,
-            mazeSizeSection
-        ) = createRefs()
-
         PathfindingAlgorithmSection(
             modifier = Modifier
-                .constrainAs(algorithmSection) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                }
                 .padding(top = 10.dp),
             currentAlgorithm = currentAlgorithm,
-            isDialogOpen = isAlgorithmSelectionDialogOpen,
-            dialogOpen = { isDialogOpen ->
-                isAlgorithmSelectionDialogOpen = isDialogOpen
+            isOptionDialogOpen = isAlgorithmSelectionDialogOpen,
+            optionDialogOpen = { isOpen ->
+                isAlgorithmSelectionDialogOpen = isOpen
+            },
+            isDescDialogOpen = isAlgorithmDescDialogOpen,
+            descDialogOpen = { isOpen ->
+                isAlgorithmDescDialogOpen = isOpen
             },
             algorithmSelection = { algorithm ->
                 if (currentAlgorithm != algorithm) {
@@ -95,17 +95,23 @@ fun SettingsScreen(
             }
         )
 
-        MazeGeneratingAlgorithmSection(
+        Divider(
             modifier = Modifier
-                .constrainAs(mazeGenSection) {
-                    start.linkTo(parent.start)
-                    top.linkTo(algorithmSection.bottom)
-                }
-                .padding(top = 10.dp),
+                .fillMaxWidth(0.9f)
+                .padding(vertical = 20.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+
+        MazeGeneratingAlgorithmSection(
+            modifier = Modifier,
             currentMazeGenAlgorithm = currentMazeGenerator,
-            isDialogOpen = isGenerationAlgorithmSelectionDialogOpen,
-            dialogOpen = { isDialogOpen ->
-                isGenerationAlgorithmSelectionDialogOpen = isDialogOpen
+            isSelectDialogOpen = isGenerationAlgorithmSelectionDialogOpen,
+            selectDialogOpen = { isOpen ->
+                isGenerationAlgorithmSelectionDialogOpen = isOpen
+            },
+            isDescDialogOpen = isGenerationAlgorithmDescDialogOpen,
+            descDialogOpen = { isOpen ->
+                isGenerationAlgorithmDescDialogOpen = isOpen
             },
             mazeGenAlgorithmSelection = { algorithm ->
                 if (currentMazeGenerator != algorithm) {
@@ -114,13 +120,15 @@ fun SettingsScreen(
             }
         )
 
-        MazeSizeSection(
+        Divider(
             modifier = Modifier
-                .constrainAs(mazeSizeSection) {
-                    start.linkTo(parent.start)
-                    top.linkTo(mazeGenSection.bottom)
-                }
-                .padding(top = 10.dp),
+                .fillMaxWidth(0.9f)
+                .padding(vertical = 20.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+
+        MazeSizeSection(
+            modifier = Modifier,
             currentMazeSize = currentMazeInfo,
             mazeSizeSelection = { mazeInfo ->
                 if (mazeInfo != currentMazeInfo) {
@@ -139,14 +147,15 @@ fun SettingsScreen(
 fun PathfindingAlgorithmSection(
     modifier: Modifier,
     currentAlgorithm: Algorithm,
-    isDialogOpen: Boolean,
-    dialogOpen: (Boolean) -> Unit,
+    isOptionDialogOpen: Boolean,
+    optionDialogOpen: (Boolean) -> Unit,
+    isDescDialogOpen: Boolean,
+    descDialogOpen: (Boolean) -> Unit,
     algorithmSelection: (Algorithm) -> Unit,
 ) {
-    ConstraintLayout(
+    Column(
         modifier = modifier
     ) {
-        val (algorithmLabelText, algorithmSelect, algorithmDesc) = createRefs()
         Text(
             text = stringResource(R.string.pathfinding_algorithm),
             textAlign = TextAlign.Start,
@@ -157,46 +166,66 @@ fun PathfindingAlgorithmSection(
             modifier = Modifier
                 .padding(start = 10.dp)
                 .fillMaxWidth()
-                .constrainAs(algorithmLabelText) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                }
         )
 
         SettingsOption(
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(algorithmSelect) {
-                    top.linkTo(algorithmLabelText.bottom)
-                    start.linkTo(parent.start)
-                }
                 .padding(top = 10.dp),
             optionDescription = stringResource(id = R.string.current_pathfinding_algorithm),
             currentlySelectedOption = stringResource(id = algorithmLabelsMap[currentAlgorithm]!!),
             dialogOpen = { isOpen ->
-                dialogOpen(isOpen)
+                optionDialogOpen(isOpen)
+            }
+        )
+
+        SettingsOption(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp),
+            optionDescription = stringResource(id = R.string.pathfinder_desc),
+            dialogOpen = { isOpen ->
+                descDialogOpen(isOpen)
             }
         )
     }
-
+    //Dialog that pops up when the user clicked on algorithm selection
     OptionSelectionDialog(
         dialogLabel = stringResource(id = R.string.pathfinding_algorithm),
-        isDialogOpen = isDialogOpen,
+        isDialogOpen = isOptionDialogOpen,
         dialogOpen = { isOpen ->
-            dialogOpen(isOpen)
+            optionDialogOpen(isOpen)
         }
-    ) { customModifier ->
+    ) {
         RadioButtonsGenerator(
-            modifier = customModifier,
+            modifier = Modifier,
             listOfOptions = Algorithm.values().toList(),
             labels = algorithmLabelsMap,
             currentlySelectedOption = currentAlgorithm,
             optionSelection = { newMazeSolver ->
                 if (currentAlgorithm != newMazeSolver) {
                     algorithmSelection(newMazeSolver)
-                    dialogOpen(false)
+                    optionDialogOpen(false)
                 }
             },
+        )
+    }
+
+    //Dialog that pops up when user clicked on algorithm description
+    OptionSelectionDialog(
+        dialogLabel = stringResource(id = R.string.pathfinding_algorithm),
+        isDialogOpen = isDescDialogOpen,
+        dialogOpen = { isOpen ->
+            descDialogOpen(isOpen)
+        }
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 10.dp),
+            text = stringResource(id = algorithmDescriptionMap[currentAlgorithm]!!),
+            style = TextStyle(
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize
+            )
         )
     }
 }
@@ -206,13 +235,14 @@ fun MazeGeneratingAlgorithmSection(
     modifier: Modifier,
     currentMazeGenAlgorithm: MazeGenerator,
     mazeGenAlgorithmSelection: (MazeGenerator) -> Unit,
-    isDialogOpen: Boolean,
-    dialogOpen: (Boolean) -> Unit,
+    isSelectDialogOpen: Boolean,
+    selectDialogOpen: (Boolean) -> Unit,
+    isDescDialogOpen: Boolean,
+    descDialogOpen: (Boolean) -> Unit
 ) {
-    ConstraintLayout(
+    Column(
         modifier = modifier
     ) {
-        val (mazeGenAlgorithmLabelText, mazeGenAlgorithmSelect, algorithmDesc) = createRefs()
         Text(
             text = stringResource(R.string.maze_gen_algorithm),
             textAlign = TextAlign.Start,
@@ -223,46 +253,65 @@ fun MazeGeneratingAlgorithmSection(
             modifier = Modifier
                 .padding(start = 10.dp)
                 .fillMaxWidth()
-                .constrainAs(mazeGenAlgorithmLabelText) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                }
         )
 
         SettingsOption(
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(mazeGenAlgorithmSelect) {
-                    top.linkTo(mazeGenAlgorithmLabelText.bottom)
-                    start.linkTo(parent.start)
-                }
                 .padding(top = 10.dp),
             optionDescription = stringResource(id = R.string.current_maze_gen_algorithm),
             currentlySelectedOption = stringResource(id = mazeGeneratorLabelsMap[currentMazeGenAlgorithm]!!),
             dialogOpen = { isOpen ->
-                dialogOpen(isOpen)
+                selectDialogOpen(isOpen)
+            }
+        )
+
+        SettingsOption(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            optionDescription = stringResource(id = R.string.current_maze_gen_algorithm_desc),
+            dialogOpen = { isOpen ->
+                descDialogOpen(isOpen)
             }
         )
     }
 
     OptionSelectionDialog(
         dialogLabel = stringResource(id = R.string.maze_gen_algorithm),
-        isDialogOpen = isDialogOpen,
+        isDialogOpen = isSelectDialogOpen,
         dialogOpen = { isOpen ->
-            dialogOpen(isOpen)
+            selectDialogOpen(isOpen)
         }
-    ) { customModifier ->
+    ) {
         RadioButtonsGenerator(
-            modifier = customModifier,
+            modifier = Modifier,
             listOfOptions = MazeGenerator.values().toList(),
             labels = mazeGeneratorLabelsMap,
             currentlySelectedOption = currentMazeGenAlgorithm,
             optionSelection = { newMazeGen ->
                 if (currentMazeGenAlgorithm != newMazeGen) {
                     mazeGenAlgorithmSelection(newMazeGen)
-                    dialogOpen(false)
+                    selectDialogOpen(false)
                 }
             },
+        )
+    }
+
+    OptionSelectionDialog(
+        dialogLabel = stringResource(id = R.string.maze_gen_algorithm),
+        isDialogOpen = isDescDialogOpen,
+        dialogOpen = { isOpen ->
+            descDialogOpen(isOpen)
+        }
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 10.dp),
+            text = stringResource(id = mazeGeneratorDescriptionMap[currentMazeGenAlgorithm]!!),
+            style = TextStyle(
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize
+            )
         )
     }
 }
@@ -317,9 +366,9 @@ fun MazeSizeSection(
         dialogOpen = { isOpen ->
             dialogOpen(isOpen)
         }
-    ) { customModifier ->
+    ) {
         RadioButtonsGenerator(
-            modifier = customModifier,
+            modifier = Modifier,
             listOfOptions = MazeInfo.values().toList(),
             labels = mazeInfoLabelsMap,
             currentlySelectedOption = currentMazeSize,
