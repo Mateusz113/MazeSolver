@@ -16,6 +16,6 @@ enum class MazeInfo(val size: Pair<Int, Int>) {
 //Map of labels to display
 val mazeInfoLabelsMap = mapOf(
     MazeInfo.Small to R.string.twenty_by_thirty,
-    MazeInfo.Medium to R.string.thirty_by_fourtyfive,
-    MazeInfo.Large to R.string.fourty_by_sixty
+    MazeInfo.Medium to R.string.thirty_by_fortyfive,
+    MazeInfo.Large to R.string.forty_by_sixty
 )
