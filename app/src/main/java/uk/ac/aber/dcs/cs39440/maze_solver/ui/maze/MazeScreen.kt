@@ -1,10 +1,13 @@
 package uk.ac.aber.dcs.cs39440.maze_solver.ui.maze
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -18,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -173,6 +177,10 @@ fun MazeScreen(
         }
     }
 
+    val localConfig = LocalConfiguration.current
+    var screenHeight = localConfig.screenHeightDp.dp
+    var screenWidth = localConfig.screenWidthDp.dp
+
     //Wrapper function for all the items on the page
     ConstraintLayout(
         modifier = Modifier
@@ -204,9 +212,22 @@ fun MazeScreen(
             modifier = Modifier
                 .constrainAs(maze) {
                     top.linkTo(settingsText.bottom)
+                    centerHorizontallyTo(parent)
                 }
-                .height(600.dp)
-                .fillMaxWidth()
+                .height(
+                    if (screenHeight > 600.dp) {
+                        600.dp
+                    } else {
+                        screenHeight
+                    }
+                )
+                .width(
+                    if (screenWidth > 400.dp) {
+                        400.dp
+                    } else {
+                        screenWidth
+                    }
+                )
         )
 
 
@@ -224,7 +245,8 @@ fun MazeScreen(
                     top.linkTo(maze.bottom)
                 }
                 .padding(start = 50.dp, top = 20.dp)
-                .width(120.dp),
+                .width(120.dp)
+                .heightIn(min = 20.dp, max = 300.dp),
             enabled = !isPathfinding
         ) {
             Text(text = stringResource(R.string.start))
@@ -262,8 +284,9 @@ fun MazeScreen(
             } else {
                 Text(text = stringResource(R.string.stop))
             }
-
         }
+
+        Spacer(modifier = Modifier.height(60.dp))
     }
 }
 

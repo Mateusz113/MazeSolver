@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -50,21 +51,15 @@ fun MainContent(
     val pagerState = rememberPagerState()
 
     //Wrapper around the application content
-    ConstraintLayout(
+    Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        val (tabs, pageContent) = createRefs()
-
         //Top of the screen navigation tool and page reference
         ScreenSelectionTabs(
             screenList = screenList,
             pagerState = pagerState,
             modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(tabs) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                },
+                .fillMaxWidth(),
             reloadMaze = {
                 viewModel.restoreSavedMaze()
             }
@@ -77,10 +72,6 @@ fun MainContent(
             pagerState = pagerState,
             modifier = Modifier
                 .fillMaxSize()
-                .constrainAs(pageContent) {
-                    top.linkTo(tabs.bottom)
-                    start.linkTo(parent.start)
-                }
         )
     }
 }
