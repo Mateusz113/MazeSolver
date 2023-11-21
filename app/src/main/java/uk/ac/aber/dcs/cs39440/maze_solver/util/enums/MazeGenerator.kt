@@ -9,8 +9,12 @@ enum class MazeGenerator {
     RandomizedDFS, Prims
 }
 
-//Map of labels to display
 val mazeGeneratorLabelsMap = mapOf(
     MazeGenerator.RandomizedDFS to R.string.randomized_dfs,
     MazeGenerator.Prims to R.string.prims
+)
+
+val mazeGeneratorDescriptionMap = mapOf(
+    MazeGenerator.RandomizedDFS to R.string.randomized_dfs_desc,
+    MazeGenerator.Prims to R.string.prims_desc
 )
