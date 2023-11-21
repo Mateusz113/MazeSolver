@@ -3,7 +3,7 @@ package uk.ac.aber.dcs.cs39440.maze_solver.util.enums
 import uk.ac.aber.dcs.cs39440.maze_solver.R
 
 /**
- * Enum classed used to identify algorithms used
+ * Enum classed used to identify pathfinding_algorithms used
  */
 enum class Algorithm {
     BFS,

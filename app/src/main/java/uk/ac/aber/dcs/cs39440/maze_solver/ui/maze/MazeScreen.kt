@@ -37,12 +37,12 @@ import uk.ac.aber.dcs.cs39440.maze_solver.R
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.MazeRender
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.SettingsText
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.theme.Maze_solverTheme
-import uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms.AStar
-import uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms.BFS
-import uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms.BidirectionalSearch
-import uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms.DFS
-import uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms.GreedySearch
-import uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms.Pathfinder
+import uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms.AStar
+import uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms.BFS
+import uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms.BidirectionalSearch
+import uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms.DFS
+import uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms.GreedySearch
+import uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms.Pathfinder
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Algorithm
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.MazeInfo
 import uk.ac.aber.dcs.cs39440.maze_solver.util.maze_map.Cell
@@ -74,7 +74,7 @@ fun MazeScreen(
 
     //Lifecycle owner to manage the states on recompositions
     var lifecycleOwner = LocalLifecycleOwner.current
-    //Delay amount for algorithms
+    //Delay amount for pathfinding_algorithms
     val delayLength = 20L
 
     //Indicates if pathfinder finished finding the route
