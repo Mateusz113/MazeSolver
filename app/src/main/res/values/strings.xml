@@ -1,32 +1,56 @@
 <resources>
+    <!-- Application Name -->
     <string name="app_name">maze_solver</string>
-    <string name="application_name">Maze Solver</string>
+
+    <!-- Page names -->
     <string name="maze">Maze</string>
     <string name="settings">Settings</string>
+
+    <!-- Maze page information -->
+    <string name="settings_text">Chosen algorithm: %1$s \n Maze size: %2$s \n Maze generator: %3$s</string>
+
+    <!-- Pathfinders labels -->
     <string name="bfs">Breadth-first search</string>
     <string name="dfs">Depth-first search</string>
     <string name="bidirectional_bfs">Bidirectional BFS</string>
     <string name="a_star">A*</string>
-    <string name="smallMazeSize">20 x 30</string>
-    <string name="mediumMazeSize">30 x 45</string>
-    <string name="largeMazeSize">40 x 60</string>
-    <string name="maze_size_desc">Maze size:</string>
+    <string name="greedy_search">Greedy search</string>
+
+    <!-- Pathfinders descriptions -->
+    <string name="bfs_desc">Breadth-First Search (BFS) is a maze-solving algorithm that systematically explores a maze by visiting all the neighboring nodes of the current position before moving on to the next level of nodes.\nBFS starts at the entrance of the maze and explores outward in a level-by-level fashion, ensuring that it searches all possible paths before determining the shortest one.\nThis algorithm is particularly useful for finding the shortest path in a maze because it guarantees that the first instance the destination is reached, it will be via the shortest possible route.</string>
+    <string name="dfs_desc">Depth-First Search (DFS) in maze solving is an algorithm that explores a maze by traversing as far as possible along each branch before backtracking.\nStarting at the entrance, DFS plunges deeply into the maze, exploring one path until it reaches a dead end or the destination. If a dead end is encountered, the algorithm backtracks to the most recent decision point and explores another unvisited branch. DFS continues this process until it finds the destination or exhausts all possibilities.\nWhile DFS doesn\'t guarantee the shortest path, it is memory-efficient and can be well-suited for certain maze structures or scenarios where finding any path to the destination is sufficient.</string>
+    <string name="bidirectional_bfs_desc">Bidirectional Breadth-First Search in maze solving is an algorithm that employs two simultaneous BFS searches—one from the entrance towards the destination and another from the destination towards the entrance. These two searches meet somewhere in the middle, ideally at the point where the shortest path connects them.\nThis approach significantly reduces the search space compared to traditional BFS or DFS, as it focuses on finding the shortest path more efficiently.\nThis bidirectional approach is particularly effective in scenarios where the branching factor of the maze is high, making it a powerful strategy for finding the shortest path while minimizing the computational effort.</string>
+    <string name="a_star_desc">The A* algorithm in maze solving is a heuristic search algorithm that efficiently finds the shortest path from the entrance to the destination. It combines the benefits of both Dijkstra\'s algorithm and greedy best-first search by considering both the cost to reach a node from the start and a heuristic estimate of the cost to reach the goal from that node.\nThe A* starts at the entrance and explores nodes based on a combination of the actual cost to reach the node from the start and an estimated cost from that node to the destination. The heuristic function guides the algorithm toward the most promising paths, making it particularly effective for finding the shortest path in a maze.\nThe algorithm continues until it reaches the destination, providing an optimal path with consideration for both the actual cost incurred and the estimated remaining cost.</string>
+    <string name="greedy_search_desc">The Greedy Best-First Search algorithm in maze solving is a heuristic search algorithm that prioritizes exploration based solely on the heuristic estimate of the cost to reach the destination from a given node. Unlike A*, greedy search does not consider the actual cost incurred to reach the current node from the start. Instead, it makes decisions solely based on the heuristic evaluation.\nGreedy Best-First Search starts at the entrance and always chooses the path that appears to be the most promising according to the heuristic. It continually moves towards the direction that seems to be the closest to the destination, without considering potential backtracking or alternative paths.\nWhile this approach is computationally less intensive than A*, it does not guarantee an optimal solution, and the path found may not be the shortest. This algorithm is suitable for scenarios where a quick solution is desired, and an exact optimal path is not strictly necessary.</string>
+
+    <!-- Maze generators labels -->
+    <string name="randomized_dfs">Randomized DFS</string>
+    <string name="prims">Prim\'s algorithm</string>
+
+    <!-- Maze generators descriptions -->
+    <string name="randomized_dfs_desc">The Randomized Depth-First Search algorithm is a method employed in maze generation, characterized by its ability to create intricate and visually engaging maze patterns. Functioning as an exploration strategy, this algorithm unfolds in the following manner:\n1. Initialization:\nCommencing from a randomly selected starting point within the grid, the algorithm designates this point as the starting cell.\nThe starting cell is then marked as \'visited,\' and its coordinates are added to a stack.\n2. Exploration and Carving:\nIteratively, while the stack is not empty:\nA cell is popped from the stack, becoming the current cell of focus.\nUnvisited neighboring cells are examined.\nA random unvisited neighbor is chosen, and a path is carved to it, marking it as visited.\nThe chosen neighbor becomes the new current cell and is added to the stack.\n3. Backtracking:\nIf the current cell has no unvisited neighbors, the algorithm backtracks by popping a cell from the stack.\nThis process continues until all cells have been visited.\n4. Completion:\nThe algorithm concludes when the stack is empty, indicating that every cell in the grid has been explored and carved.\n5. Resultant Maze:\nThe output is a maze characterized by an intricate, non-repetitive path, exhibiting a visually appealing, randomized structure.\n\nThe Randomized Depth-First Search algorithm is renowned for its capacity to yield mazes that possess both complexity and aesthetic appeal, making it a preferred choice in various applications, including game development and spatial simulations.</string>
+    <string name="prims_desc">Prim\'s Algorithm, a sophisticated maze generation technique, operates like a meticulous architect constructing a maze with a deliberate and structured approach. Here\'s a step-by-step elucidation of how this algorithm unfolds:\n1. Initialization:\nBegin by selecting a random cell as the starting point.\nMark this initial cell as part of the maze and add its walls to the list of potential edges.\n2. Growing the Maze:\nWhile there are potential edges in the list:\nRandomly choose an edge from the list.\nIf only one of the two cells separated by this edge is part of the maze (visited), mark the unvisited cell as part of the maze.\nRemove the wall between the two cells, connecting them.\nAdd the walls of the newly added cell to the list of potential edges.\n3. Completion:\nContinue this process until the maze reaches the desired size or complexity.\n4. Resultant Maze:\nThe outcome is a maze characterized by a deliberate and organized structure. The algorithm ensures that the generated maze remains connected, producing a maze with a systematic layout.\n\nPrim\'s Algorithm, through its meticulous selection of edges, creates mazes with an intentional and aesthetically pleasing design. This makes it suitable for scenarios where a more ordered and deliberate maze structure is desired, such as in architectural simulations or puzzle games.</string>
+
+    <!-- Maze size -->
+    <string name="twenty_by_thirty">20 x 30</string>
+    <string name="thirty_by_fortyfive">30 x 45</string>
+    <string name="forty_by_sixty">40 x 60</string>
+
+    <!-- Buttons labels -->
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="reload">Reload</string>
-    <string name="greedy_search">Greedy search</string>
-    <string name="randomized_dfs">Randomized DFS</string>
-    <string name="prims">Prim\'s algorithm</string>
-    <string name="maze_generator">Maze generator:</string>
-    <string name="twenty_by_thirty">20 x 30</string>
-    <string name="thirty_by_fourtyfive">30 x 45</string>
-    <string name="fourty_by_sixty">40 x 60</string>
-    <string name="settings_text">Chosen algorithm: %1$s \n Maze size: %2$s \n Maze generator: %3$s</string>
     <string name="cancel">Cancel</string>
-    <string name="pathfinding_algorithm">Pathfinding algoritm</string>
-    <string name="current_pathfinding_algorithm">Currently selected pathfinding algorithm</string>
+
+    <!-- Dialog and section labels in SettingsScreen -->
     <string name="maze_gen_algorithm">Maze generating algorithm</string>
-    <string name="current_maze_gen_algorithm">Currently selected maze generating algorithm</string>
     <string name="maze_size">Maze size</string>
+    <string name="pathfinding_algorithm">Pathfinding algorithm</string>
+
+    <!-- Settings buttons-->
+    <string name="current_pathfinding_algorithm">Currently selected pathfinding algorithm</string>
+    <string name="pathfinder_desc">Pathfinding algorithm description</string>
+    <string name="current_maze_gen_algorithm">Currently selected maze generating algorithm</string>
+    <string name="current_maze_gen_algorithm_desc">Maze generation algorithm description</string>
     <string name="current_maze_size">Currently selected generated maze size</string>
 </resources>
