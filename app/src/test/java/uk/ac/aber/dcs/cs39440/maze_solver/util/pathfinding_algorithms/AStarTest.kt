@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms
+package uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms
 
 import org.junit.Before
 import org.junit.Test

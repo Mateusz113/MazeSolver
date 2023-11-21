@@ -1,8 +1,7 @@
-package uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms
+package uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms
 
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Node
 import uk.ac.aber.dcs.cs39440.maze_solver.util.maze_map.Cell
-import java.util.Queue
 import kotlin.math.pow
 import kotlin.math.sqrt
 

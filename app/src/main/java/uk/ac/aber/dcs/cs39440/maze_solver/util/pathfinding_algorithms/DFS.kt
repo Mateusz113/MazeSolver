@@ -1,32 +1,30 @@
-package uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms
+package uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms
 
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Direction
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Node
 import uk.ac.aber.dcs.cs39440.maze_solver.util.maze_map.Cell
+import java.util.Deque
 import java.util.LinkedList
-import java.util.Queue
 
-
-class BFS(
+class DFS(
     override var mazeWidth: Int,
     override var mazeHeight: Int,
     override var startCell: Cell,
     override var endCell: Cell
 ) : SingleStartPathfinder {
-    //Inherited variables from interface
+    //Variables inherited from the interface
     override val parentMap = mutableMapOf<Cell, Cell>()
     override var finalPathCell: Cell? = null
 
     //Class specific variables
-    private val queueToCheck: Queue<Cell> = LinkedList()
     private var currentCell = Cell(-1, -1)
+    private val queueToCheck: Deque<Cell> = LinkedList()
 
     //Initialize the class with the starting node already inserted into queue
     init {
         queueToCheck.add(startCell)
     }
 
-    //Breadth-first search run implementation
     override fun run(
         mazeMap: MutableList<MutableList<Cell>>,
         updateAffiliation: (Cell, Node) -> Unit
@@ -57,14 +55,13 @@ class BFS(
             mazeMap = mazeMap,
             currentCell = currentCell
         )
-        for (direction in Direction.values()) {
+        for (direction in Direction.values().reversedArray()) {
             validPathsMap[direction]?.let {
                 parentMap[it] = currentCell
-                queueToCheck.add(it)
+                queueToCheck.addFirst(it)
                 cellList.add(it)
             }
         }
         return cellList.toList()
     }
-
 }

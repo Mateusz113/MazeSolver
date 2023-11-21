@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms
+package uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms
 
 import kotlinx.coroutines.delay
 import uk.ac.aber.dcs.cs39440.maze_solver.util.enums.Direction

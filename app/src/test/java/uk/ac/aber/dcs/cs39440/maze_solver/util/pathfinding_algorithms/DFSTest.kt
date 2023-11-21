@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs39440.maze_solver.util.algorithms
+package uk.ac.aber.dcs.cs39440.maze_solver.util.pathfinding_algorithms
 
 import com.google.common.truth.Truth
 import kotlinx.coroutines.runBlocking
