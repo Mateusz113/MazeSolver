@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs39440.maze_solver
+package uk.ac.aber.dcs.cs39440.maze_solver.ui.main
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel

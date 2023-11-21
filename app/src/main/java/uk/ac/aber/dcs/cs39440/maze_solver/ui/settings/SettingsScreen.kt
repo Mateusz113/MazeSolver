@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
-import uk.ac.aber.dcs.cs39440.maze_solver.MainViewModel
+import uk.ac.aber.dcs.cs39440.maze_solver.ui.main.MainViewModel
 import uk.ac.aber.dcs.cs39440.maze_solver.R
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.OptionSelectionDialog
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.RadioButtonsGenerator

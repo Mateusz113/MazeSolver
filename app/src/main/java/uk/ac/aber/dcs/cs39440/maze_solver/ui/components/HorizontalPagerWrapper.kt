@@ -10,7 +10,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import uk.ac.aber.dcs.cs39440.maze_solver.MainViewModel
+import uk.ac.aber.dcs.cs39440.maze_solver.ui.main.MainViewModel
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.maze.MazeScreen
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.navigation.Screen
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.settings.SettingsScreen

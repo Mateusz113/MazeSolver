@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs39440.maze_solver
+package uk.ac.aber.dcs.cs39440.maze_solver.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import uk.ac.aber.dcs.cs39440.maze_solver.ui.components.HorizontalPagerWrapper

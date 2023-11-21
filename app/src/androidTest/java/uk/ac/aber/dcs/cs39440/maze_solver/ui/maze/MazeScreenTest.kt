@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import org.junit.Rule
 import org.junit.Test
-import uk.ac.aber.dcs.cs39440.maze_solver.MainActivity
+import uk.ac.aber.dcs.cs39440.maze_solver.ui.main.MainActivity
 import java.util.Timer
 import kotlin.concurrent.schedule
 
