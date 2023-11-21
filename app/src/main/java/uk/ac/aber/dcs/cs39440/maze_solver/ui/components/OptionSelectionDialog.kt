@@ -2,10 +2,19 @@ package uk.ac.aber.dcs.cs39440.maze_solver.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +38,7 @@ fun OptionSelectionDialog(
     dialogLabel: String,
     isDialogOpen: Boolean,
     dialogOpen: (Boolean) -> Unit,
-    dialogContent: @Composable (Modifier) -> Unit
+    dialogContent: @Composable () -> Unit
 ) {
     if (isDialogOpen) {
 
@@ -68,7 +77,7 @@ fun OptionSelectionDialog(
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    dialogContent(
+                    Column(
                         Modifier
                             .constrainAs(radioButtons) {
                                 top.linkTo(labelDivider.bottom)
@@ -76,7 +85,11 @@ fun OptionSelectionDialog(
                             }
                             .fillMaxWidth()
                             .padding(top = 10.dp)
-                    )
+                            .heightIn(min = 0.dp, max = 300.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        dialogContent()
+                    }
 
                     Divider(
                         modifier = Modifier
@@ -96,9 +109,15 @@ fun OptionSelectionDialog(
                                 top.linkTo(buttonDivider.bottom)
                             }
                             .padding(5.dp),
-                        onClick = { dialogOpen(false) }
+                        onClick = { dialogOpen(false) },
                     ) {
-                        Text(text = stringResource(id = R.string.cancel))
+                        Text(
+                            text = stringResource(id = R.string.cancel),
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
                     }
                 }
             }
